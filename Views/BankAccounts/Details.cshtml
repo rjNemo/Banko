@@ -1,0 +1,128 @@
+@model BankingApp.Models.BankAccount
+
+@{
+    ViewData["Title"] = "Account Details";
+}
+
+<h1>Account Details</h1>
+
+<div>
+    <h4>Balance: @Model.Balance €</h4>
+    <hr />
+    <div class="row">
+        <div class="col-sm-10">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Balance)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Balance) €
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CreditLimit)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CreditLimit)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Owner)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Owner.Id)
+                </dd>
+            </dl>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="row">
+                <form asp-action="HandleDeposit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <input name="amount" placeholder="123 €" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Deposit" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <form asp-action="HandleWithdrawal">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <input name="amount" placeholder="123 €" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Withdraw" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <form asp-action="HandleTransfer">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <input name="amount" placeholder="123 €" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input name="otherAccountId" placeholder="1" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Transfer" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Back to List</a>
+        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <b>Operation History</b>
+                </h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Operations)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="BankAccounts" asp-action="Details" asp-route-Id=@item.Id>
+                                            @item.Id
+                                        </a>
+                                    </td>
+                                    <td>@item.Date</td>
+                                    <td>@item.Amount</td>
+                                    <td>@item.Description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a class="btn btn-primary" asp-controller="BankAccounts" asp-action="Create">Add Account</a>
+            </div>
+        </div>
+    </div>
+</div>

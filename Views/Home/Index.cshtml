@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Online Banking App";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Love Your Money</h1>
+    @{
+        string userId = (string)TempData["User"];
+        if (String.IsNullOrEmpty(userId))
+        {
+            <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Login" role="button">Log in</a>
+        }
+        else
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="ApplicationUsers" asp-action="Details" asp-route-Id=@userId>Manage your accounts</a>
+        }
+    }
+</div>
