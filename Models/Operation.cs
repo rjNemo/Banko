@@ -5,7 +5,7 @@ namespace BankingApp.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Description { get; set; }
         public EventType Type { get; set; }
 

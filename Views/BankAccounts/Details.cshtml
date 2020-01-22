@@ -19,7 +19,7 @@
                     @Html.DisplayFor(model => model.Balance) €
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.CreditLimit)
+                    @Html.DisplayNameFor(model => model.CreditLimit) €
                 </dt>
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.CreditLimit)
@@ -28,7 +28,9 @@
                     @Html.DisplayNameFor(model => model.Owner)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Owner.Id)
+                    <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-Id="@Model.OwnerId">
+                        @Html.DisplayFor(model => model.Owner.FullName)
+                    </a>
                 </dd>
             </dl>
         </div>
@@ -105,18 +107,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Operations)
-                            {
-                                <tr>
-                                    <td>
-                                        <a asp-controller="BankAccounts" asp-action="Details" asp-route-Id=@item.Id>
-                                            @item.Id
-                                        </a>
-                                    </td>
-                                    <td>@item.Date</td>
-                                    <td>@item.Amount</td>
-                                    <td>@item.Description</td>
-                                </tr>
+                            @{
+                                int index = 0;
+                                foreach (var item in Model.Operations)
+                                {
+                                    index++;
+                                    <tr>
+                                        <td>
+                                            @index
+                                        </td>
+                                        <td>@item.Date</td>
+                                        <td>@item.Amount €</td>
+                                        <td>@item.Description</td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>

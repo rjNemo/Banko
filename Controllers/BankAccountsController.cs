@@ -162,6 +162,10 @@ namespace BankingApp.Controllers
 
         public async Task<IActionResult> HandleDeposit(int id, int amount)
         {
+            if (!BankAccountExists(id))
+            {
+                return NotFound();
+            }
             var bankAccount = await _context.BankAccounts.FindAsync(id);
             bankAccount.MakeDeposit(amount);
             await _context.SaveChangesAsync();
@@ -170,6 +174,10 @@ namespace BankingApp.Controllers
 
         public async Task<IActionResult> HandleWithdrawal(int id, int amount)
         {
+            if (!BankAccountExists(id))
+            {
+                return NotFound();
+            }
             var bankAccount = await _context.BankAccounts.FindAsync(id);
             bankAccount.MakeWithdrawal(amount);
             await _context.SaveChangesAsync();
@@ -178,9 +186,22 @@ namespace BankingApp.Controllers
 
         public async Task<IActionResult> HandleTransfer(int id, int amount, int otherAccountId)
         {
+            if (!BankAccountExists(id))
+            {
+                return NotFound();
+            }
+
             var bankAccount = await _context.BankAccounts.FindAsync(id);
+            if (!BankAccountExists(otherAccountId))
+            {
+                bankAccount.AddEntry(amount, EventType.Failed, $"Transfer {EventType.Failed.ToString()}: account #{otherAccountId} does not exist.");
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", new { id });
+            }
+
             var otherAccount = await _context.BankAccounts.FindAsync(otherAccountId);
             bankAccount.TransferMoney(otherAccount, amount);
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", new { id });
         }

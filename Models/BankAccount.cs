@@ -6,8 +6,9 @@ namespace BankingApp.Models
     public class BankAccount
     {
         public int Id { get; set; }
-        public int Balance { get; set; }
-        public int CreditLimit { get; set; } = 0;
+        public decimal Balance { get; set; }
+        public decimal CreditLimit { get; set; } = 0;
+        public DateTime CreationDate { get; set; } = DateTime.Now;
 
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
@@ -26,14 +27,14 @@ namespace BankingApp.Models
         }
 
 
-        public void MakeDeposit(int amount, string description = "Deposit")
+        public void MakeDeposit(decimal amount, string description = null)
         {
             Balance += amount;
             AddEntry(amount, EventType.Deposit, description);
         }
 
         // Withdrawal method, return true if succesful, false otherwise
-        public bool MakeWithdrawal(int amount, string description = "Withdrawal")
+        public bool MakeWithdrawal(decimal amount, string description = null)
         {
             if (Balance - amount > CreditLimit)
             {
@@ -43,22 +44,21 @@ namespace BankingApp.Models
             }
             else
             {
-                AddEntry(amount, EventType.Failed, description);
+                AddEntry(amount, EventType.Failed, $"{EventType.Failed.ToString()}: Unsufficient funds.");
                 return false;
             }
         }
 
-        public void TransferMoney(BankAccount otherAccount, int amount)
+        public void TransferMoney(BankAccount otherAccount, decimal amount)
         {
             // proceed to Deposit only if Withdrawal succeeds,
-            if (MakeWithdrawal(amount, $"Transfer to account: {otherAccount.Id}"))
+            if (MakeWithdrawal(amount, $"Transfer to account #{otherAccount.Id}"))
             {
-                otherAccount.MakeDeposit(amount, $"Transfer from account: {this.Id}");
-                //return true;
+                otherAccount.MakeDeposit(amount, $"Transfer from account #{this.Id}");
             }
         }
 
-        public void AddEntry(int amount, EventType type, string description = null)
+        public void AddEntry(decimal amount, EventType type, string description = null)
         {
             Operation entry = new Operation()
             {
@@ -66,7 +66,7 @@ namespace BankingApp.Models
                 OwnerAccount = this,
                 OwnerAccountId = this.Id,
                 Type = type,
-                Description = description
+                Description = !string.IsNullOrEmpty(description) ? description : type.ToString()
             };
             Operations.Add(entry);
         }
