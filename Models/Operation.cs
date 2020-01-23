@@ -8,11 +8,7 @@ namespace BankingApp.Models
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public EventType Type { get; set; }
-
         public int OwnerAccountId { get; set; }
         public BankAccount OwnerAccount { get; set; }
-
-        //public int OtherAccountId { get; set; }
-        //public BankAccount OtherAccount { get; set; }
     }
 }
