@@ -4,3 +4,4 @@ obj/
 wwwroot/
 Migrations/
 Areas/
+Data/SeedData.cs

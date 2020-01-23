@@ -17,13 +17,9 @@ namespace BankingApp.Models
         public IList<Operation> Operations
         {
             get
-            {
-                return _operations ?? (_operations = new List<Operation>());
-            }
+            { return _operations ?? (_operations = new List<Operation>()); }
             set
-            {
-                _operations = value;
-            }
+            { _operations = value; }
         }
 
 
