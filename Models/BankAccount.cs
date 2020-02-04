@@ -6,8 +6,19 @@ namespace BankingApp.Models
     public class BankAccount
     {
         public int Id { get; set; }
-        public decimal Balance { get; set; }
-        public decimal CreditLimit { get; set; } = 0;
+        private int _balance;
+        public int Balance
+        {
+            get
+            {
+                return _balance / 100;
+            }
+            set
+            {
+                _balance = value;
+            }
+        }
+        public int CreditLimit { get; set; } = 0;
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         public string OwnerId { get; set; }
@@ -23,14 +34,14 @@ namespace BankingApp.Models
         }
 
 
-        public void MakeDeposit(decimal amount, string description = null)
+        public void MakeDeposit(int amount, string description = null)
         {
             Balance += amount;
             AddEntry(amount, EventType.Deposit, description);
         }
 
         // Withdrawal method, return true if succesful, false otherwise
-        public bool MakeWithdrawal(decimal amount, string description = null)
+        public bool MakeWithdrawal(int amount, string description = null)
         {
             if (Balance - amount > CreditLimit)
             {
@@ -45,7 +56,7 @@ namespace BankingApp.Models
             }
         }
 
-        public void TransferMoney(BankAccount otherAccount, decimal amount)
+        public void TransferMoney(BankAccount otherAccount, int amount)
         {
             // proceed to Deposit only if Withdrawal succeeds,
             if (MakeWithdrawal(amount, $"Transfer to account #{otherAccount.Id}"))
@@ -54,7 +65,7 @@ namespace BankingApp.Models
             }
         }
 
-        public void AddEntry(decimal amount, EventType type, string description = null)
+        public void AddEntry(int amount, EventType type, string description = null)
         {
             Operation entry = new Operation()
             {

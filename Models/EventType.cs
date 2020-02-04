@@ -1,5 +1,4 @@
-﻿using System;
-namespace BankingApp.Models
+﻿namespace BankingApp.Models
 {
     public enum EventType
     {

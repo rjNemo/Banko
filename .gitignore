@@ -1,4 +1,5 @@
 ﻿.vs/
+.vscode/
 bin/
 obj/
 wwwroot/

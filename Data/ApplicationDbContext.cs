@@ -11,8 +11,7 @@ namespace BankingApp.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-        }
+        { }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Operation> Operations { get; set; }

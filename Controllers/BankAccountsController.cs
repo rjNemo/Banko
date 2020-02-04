@@ -24,8 +24,10 @@ namespace BankingApp.Controllers
         // GET: BankAccounts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BankAccounts.Include(b => b.Owner);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = await _context.BankAccounts
+                .Include(b => b.Owner)
+                .ToListAsync();
+            return View(applicationDbContext);
         }
 
         // GET: BankAccounts/Details/5
@@ -44,7 +46,6 @@ namespace BankingApp.Controllers
             {
                 return NotFound();
             }
-
             return View(bankAccount);
         }
 
