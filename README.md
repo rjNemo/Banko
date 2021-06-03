@@ -23,9 +23,5 @@
 
 ## Stack
 
-### Front-end
-* React for client-side code
-
-### Back-end
 * ASP.NET Core 3.1 and C# for cross-platform server-side code
 * PostgreSQL Relational Database
